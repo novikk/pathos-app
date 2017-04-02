@@ -6,10 +6,12 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/rs/cors"
 )
 
-var doctorStatus = "neutral"
-var patientStatus = "neutral"
+var doctorStatus = "happy"
+var patientStatus = "happy"
 
 func serveApp(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
@@ -43,13 +45,17 @@ func getDoctorStatus(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.Handle("/", http.FileServer(http.Dir("./static")))
-	http.HandleFunc("/setDoctorStatus", setDoctorStatus)
-	http.HandleFunc("/setPatientStatus", setPatientStatus)
-	http.HandleFunc("/getDoctorStatus", getDoctorStatus)
-	http.HandleFunc("/getPatientStatus", getPatientStatus)
+	mux := http.NewServeMux()
 
-	err := http.ListenAndServe(":"+os.Getenv("PORT"), nil) // set listen port
+	mux.Handle("/", http.FileServer(http.Dir("./static")))
+	mux.HandleFunc("/setDoctorStatus", setDoctorStatus)
+	mux.HandleFunc("/setPatientStatus", setPatientStatus)
+	mux.HandleFunc("/getDoctorStatus", getDoctorStatus)
+	mux.HandleFunc("/getPatientStatus", getPatientStatus)
+
+	handler := cors.Default().Handler(mux)
+
+	err := http.ListenAndServe(":"+os.Getenv("PORT"), handler) // set listen port
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
