@@ -2,5 +2,20 @@
 	"ImportPath": "github.com/novikk/pathos-app",
 	"GoVersion": "go1.8",
 	"GodepVersion": "v79",
-	"Deps": []
+	"Deps": [
+		{
+			"ImportPath": "github.com/rs/cors",
+			"Comment": "v1.0",
+			"Rev": "a62a804a8a009876ca59105f7899938a1349f4b3"
+		},
+		{
+			"ImportPath": "github.com/rs/xhandler",
+			"Comment": "v1.0-1-ged27b6f",
+			"Rev": "ed27b6fd65218132ee50cd95f38474a3d8a2cd12"
+		},
+		{
+			"ImportPath": "golang.org/x/net/context",
+			"Rev": "d513e58596cd55e6f47cd1dcbff6b46035baeccb"
+		}
+	]
 }
