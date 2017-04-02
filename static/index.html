@@ -1,0 +1,78 @@
+<html style="width:100%; box-sizing: border-box;">
+    <head>
+        <style>
+            html {
+                font-family: sans-serif;
+            }
+
+            html,body {
+                margin: 0;
+                padding: 0;
+            }
+
+            *, *:before, *:after {
+                box-sizing: inherit;
+            }
+
+            .gradient{
+                color: black;
+
+                background: #e4f5fc; /* Old browsers */
+                background: -moz-linear-gradient(-45deg, #e4f5fc 0%, #bfe8f9 50%, #9fd8ef 51%, #2ab0ed 100%); /* FF3.6-15 */
+                background: -webkit-linear-gradient(-45deg, #e4f5fc 0%,#bfe8f9 50%,#9fd8ef 51%,#2ab0ed 100%); /* Chrome10-25,Safari5.1-6 */
+                background: linear-gradient(135deg, #e4f5fc 0%,#bfe8f9 50%,#9fd8ef 51%,#2ab0ed 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e4f5fc', endColorstr='#2ab0ed',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+            }
+        </style>
+
+        <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+
+        <title>Pathos App</title>
+    </head>
+    <body style="width:100%">
+        <div class="gradient" style="padding: 30px; font-size: 36px">Ricard is feeling</div><br>
+        <div style="width: 100%; text-align: center">
+            <div style="font-size: 50px; ; color: black; margin: 0 auto; margin-top: 20px;" id="doctorStatus">Angry</div>
+            <img src="faces/anger.png" id="doctorStatusImg" alt="">
+        </div>
+        
+        <div class="gradient" style="margin-top: 50px; padding: 30px; font-size: 36px">How are you feeling?</div>
+        <div style="padding: 30px; font-size: 30px">
+            <div style="border: 1px solid #ccc">
+                <div style="width: 100%; border-bottom: 1px solid #ccc">
+                    <div onclick="setPatientStatus('happy')" style="width:33%; float: left; text-align: center; border-right: 1px solid #ccc;padding: 30px;"><img style="width:100%" src="faces/happy.png" alt="">Happy</div>
+                    <div onclick="setPatientStatus('sad')" style="width:33%; float: left; text-align: center; border-right: 1px solid #ccc;padding: 30px;"><img style="width:100%" src="faces/sad.png" alt="">Sad</div>
+                    <div onclick="setPatientStatus('angry')" style="width:33%; float: left; text-align: center;padding: 30px;"><img style="width:100%" src="faces/angry.png" alt="">Angry</div>
+                    <br style="clear: both;" />
+                </div>
+
+                <div style="width: 100%">
+                    <div onclick="setPatientStatus('fear')" style="width:33%; float: left; text-align: center; border-right: 1px solid #ccc;padding: 30px;"><img style="width:100%" src="faces/fear.png" alt="">Fear</div>
+                    <div onclick="setPatientStatus('disgust')" style="width:33%; float: left; text-align: center; border-right: 1px solid #ccc;padding: 30px;"><img style="width:100%" src="faces/disgust.png" alt="">Disgust</div>
+                    <div onclick="setPatientStatus('surprise')" style="width:33%; float: left; text-align: center;padding: 30px;"><img style="width:100%" src="faces/surprise.png" alt="">Surprise</div>
+                    <br style="clear: both;" />
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function capitalizeFirstLetter(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
+
+            setInterval(function() {
+                $.get( "/getDoctorStatus", function( data ) {
+                    $( "#doctorStatus" ).html(capitalizeFirstLetter(data));
+                    $( "#doctorStatusImg" ).attr('src', '/faces/' + data+'.png');
+                })
+            }, 1000);
+
+            function setPatientStatus(status) {
+                $.get( "/setPatientStatus?status=" + status)
+            }
+        </script>
+    </body>
+</html>
