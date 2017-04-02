@@ -13,6 +13,13 @@ import (
 var doctorStatus = "happy"
 var patientStatus = "happy"
 
+var happy = "0"
+var angry = "0"
+var sad = "0"
+var fear = "0"
+var surprise = "0"
+var disgust = "0"
+
 func serveApp(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 	w.WriteHeader(http.StatusOK)
@@ -30,6 +37,17 @@ func setDoctorStatus(w http.ResponseWriter, r *http.Request) {
 	doctorStatus = r.Form["status"][0]
 }
 
+func setDoctorStatusAll(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+
+	happy = r.Form["happy"][0]
+	angry = r.Form["angry"][0]
+	sad = r.Form["sad"][0]
+	fear = r.Form["fear"][0]
+	surprise = r.Form["surprise"][0]
+	disgust = r.Form["disgust"][0]
+}
+
 func setPatientStatus(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
@@ -44,6 +62,12 @@ func getDoctorStatus(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, doctorStatus)
 }
 
+func getDoctorStatusAll(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+
+	fmt.Fprint(w, happy+" "+angry+" "+sad+" "+fear+" "+surprise+" "+disgust)
+}
+
 func main() {
 	mux := http.NewServeMux()
 
@@ -52,6 +76,8 @@ func main() {
 	mux.HandleFunc("/setPatientStatus", setPatientStatus)
 	mux.HandleFunc("/getDoctorStatus", getDoctorStatus)
 	mux.HandleFunc("/getPatientStatus", getPatientStatus)
+	mux.HandleFunc("/setDoctorStatusAll", setDoctorStatusAll)
+	mux.HandleFunc("/getDoctorStatusAll", getDoctorStatusAll)
 
 	handler := cors.Default().Handler(mux)
 
